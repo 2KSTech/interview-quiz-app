@@ -47,3 +47,5 @@ backend/quizzes_content.sqlite
 backend/quiz_results.sqlite
 tmp/
 backend/quizdb.sqlite
+.dev/
+.specstory/
