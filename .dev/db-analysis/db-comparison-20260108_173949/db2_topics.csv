@@ -1,0 +1,92 @@
+slug,name,industry_specific
+accounting,Accounting,0
+adobe-acrobat,"Adobe Acrobat",0
+adobe-ai,"Adobe AI",0
+adobe-illustrator,"Adobe Illustrator",0
+adobe-in-design,"Adobe InDesign",0
+adobe-lightroom,"Adobe Lightroom",0
+adobe-photoshop,"Adobe Photoshop",0
+adobe-premiere-pro,"Adobe Premiere Pro",0
+adobe-xd,"Adobe XD",0
+after-effects,"After Effects",0
+agile-methodologies,"Agile Methodologies",0
+android,Android,0
+angular,Angular,0
+arc-gis,"Arc GIS",0
+autocad,Autocad,0
+autodesk-fusion-360,"Autodesk Fusion 360",0
+autodesk-maya,"Autodesk Maya",0
+aws,"Amazon Web Services (AWS)",0
+aws-lambda,"AWS Lambda",0
+bash,Bash,0
+c++,C++,0
+c-(programming-language),"C (Programming Language)",0
+c-sharp,C#,0
+css,Css,0
+cybersecurity,"Cybersecurity Assessment",0
+django,Django,0
+dotnet-framework,".NET Framework",0
+dreamweaver,Dreamweaver,0
+eclipse,Eclipse,0
+final-cut-pro,"Final Cut Pro",0
+front-end-development,"Front-end Development",0
+git,Git,0
+go,"Go (Programming Language)",0
+google-ads,"Google Ads",0
+google-analytics,"Google Analytics",0
+google-cloud-platform,"Google Cloud Platform (GCP)",0
+hadoop,Hadoop,0
+html,Html,0
+imovie,Imovie,0
+it-operations,"IT Operations",0
+java,Java,0
+javascript,Javascript,0
+jquery,Jquery,0
+json,Json,0
+keynote,Keynote,0
+kotlin,Kotlin,0
+linux,Linux,0
+logic-pro,"Logic Pro",0
+machine-learning,"Machine Learning",0
+matlab,Matlab,0
+maven,Maven,0
+microsoft-access,"Microsoft Access Assessment",0
+microsoft-azure,"Microsoft Azure",0
+microsoft-excel,"Microsoft Excel",0
+microsoft-outlook,"Microsoft Outlook",0
+microsoft-power-automate,"Microsoft Power Automate",0
+microsoft-power-bi,"Microsoft Power BI",0
+microsoft-power-point,"Microsoft PowerPoint",0
+microsoft-project,"Microsoft Project",0
+microsoft-word,"Microsoft Word",0
+mongodb,Mongodb,0
+mysql,Mysql,0
+node.js,Node.Js,0
+nosql,Nosql,0
+object-oriented-programming,"Object-Oriented Programming (OOP)",0
+objective-c,"Objective C",0
+php,Php,0
+pro-tools,"Pro Tools",0
+python,"Python (Programming Language)",0
+quickbooks,Quickbooks,0
+r,"R (Programming Language)",0
+reactjs,Reactjs,0
+rest-api,"REST APIs",0
+revit,Revit,0
+ruby-on-rails,"Ruby on Rails",0
+rust,"Rust (Programming Language)",0
+scala,Scala,0
+search-engine-optimization,"Search Engine Optimization (SEO)",0
+sharepoint,Sharepoint,0
+sketchup,Sketchup,0
+solidworks,Solidworks,0
+spring-framework,"Spring Framework",0
+swift,Swift,0
+t-sql,"Transact-SQL (T-SQL)",0
+typescript,Typescript,0
+unity,"Unity (Animation, Asset Management, C# Scripting, Gameplay, Programming)",0
+vba,"Visual Basic for Applications (VBA)",0
+visio,Visio,0
+windows-server,"Windows Server",0
+wordpress,Wordpress,0
+xml,Xml,0
