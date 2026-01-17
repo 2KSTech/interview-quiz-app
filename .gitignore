@@ -41,11 +41,6 @@ lerna-debug.log*
 .cursorindexingignore
 backend/quizzes_content.sqlite
 backend/quiz_results.sqlite
-backend/quiz_results.sqlite
-backend/quizzes_content.sqlite
-backend/quizzes_content.sqlite
-backend/quiz_results.sqlite
 tmp/
-backend/quizdb.sqlite
 .dev/
 .specstory/
