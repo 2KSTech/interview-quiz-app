@@ -1,10 +1,10 @@
 module.exports = {
   apps: [
     {
-      name: 'wip-quiz-app-backend',
+      name: 'interview-quiz-app-backend',
       script: 'npm',
       args: 'start',
-      cwd: '/opt/wip-quiz-app/backend',
+      cwd: '/opt/interview-quiz-app/backend',
       instances: 1,
       exec_mode: 'fork',
       env: {
@@ -18,9 +18,9 @@ module.exports = {
       min_uptime: '10s',
       
       // Logging
-      log_file: '/var/log/wip-quiz-app/combined-3.log',
-      out_file: '/var/log/wip-quiz-app/backend-out-3.log',
-      error_file: '/var/log/wip-quiz-app/backend-error-3.log',
+      log_file: '/var/log/interview-quiz-app/combined-3.log',
+      out_file: '/var/log/interview-quiz-app/backend-out-3.log',
+      error_file: '/var/log/interview-quiz-app/backend-error-3.log',
       log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
       
       // Health monitoring
@@ -39,10 +39,10 @@ module.exports = {
       }
     },
     {
-      name: 'wip-quiz-app-frontend',
+      name: 'interview-quiz-app-frontend',
       script: 'npm',
       args: 'run preview',
-      cwd: '/opt/wip-quiz-app',
+      cwd: '/opt/interview-quiz-app',
       instances: 1,
       exec_mode: 'fork',
       env: {
@@ -55,9 +55,9 @@ module.exports = {
       min_uptime: '10s',
       
       // Logging
-      log_file: '/var/log/wip-quiz-app/frontend-combined-1.log',
-      out_file: '/var/log/wip-quiz-app/frontend-out-1.log',
-      error_file: '/var/log/wip-quiz-app/frontend-error-1.log',
+      log_file: '/var/log/interview-quiz-app/frontend-combined-1.log',
+      out_file: '/var/log/interview-quiz-app/frontend-out-1.log',
+      error_file: '/var/log/interview-quiz-app/frontend-error-1.log',
       log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
       
       // Health monitoring

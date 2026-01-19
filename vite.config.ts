@@ -13,6 +13,7 @@ export default defineConfig({
             clientPort: process.env.NODE_ENV === 'production' ? 443 : 5173,
             overlay: false, // Disable error overlay to prevent stale errors
         },
+        allowedHosts: true
     },
     build: {
         // Ensure production builds don't try to connect to dev server

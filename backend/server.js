@@ -14,12 +14,14 @@ const quizApiRoutes = require('./routes/quiz-api');
 const app = express();
 const PORT = process.env.PORT || 3010;
 
-// CORS configuration - allow localhost for development
+// CORS configuration - allow localhost for development - domain.tld for prod
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
   'http://localhost:3010',
   'http://localhost:4173',
+  'https://quiz.workinpilot.fun',
+  'https://quiz-be.workinpilot.fun'
 ];
 
 if (process.env.CORS_ORIGINS) {
