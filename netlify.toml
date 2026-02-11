@@ -1,0 +1,16 @@
+[build]
+  command = "npm run build" # Your frontend build command
+  publish = "dist"          # Your frontend publish directory
+  functions = "backend"   # Directory for Netlify functions
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat" # Redirect /api requests to functions
+  status = 200
+
+[[redirects]]
+  from = "/auth/*"
+  to = "/.netlify/functions/:splat" # Redirect /api requests to functions
+  status = 200
+
+
