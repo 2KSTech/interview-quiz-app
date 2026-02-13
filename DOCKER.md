@@ -3,31 +3,66 @@
 This document explains how to build, run, and publish the Docker containers for the Interview Quiz App (frontend + backend).
 
 ## Architecture
-
-The application consists of two services:
+   
+The application stack is comprised of two services:
 - **Backend**: Node.js/Express API server running on port 3010 (internal)
 - **Frontend**: React/Vite SPA served by nginx on port 8080
 
 Both services are orchestrated via `docker-compose.yml` and can be run together or separately.
-
+  
 ## Prerequisites
 
 - Docker installed on your system
 - Docker Compose installed (usually comes with Docker Desktop)
-- A Docker Hub account (for publishing)
-
+- A Docker Hub account (for publishing ONLY)
+      
 ## Building and Running Locally
 
 ### Using Docker Compose (Recommended)
+   
+#### Preparation
+
+You will need to edit the `docker-compose.yml` file, so open it in an editor and check the configuration tags mentioned below.
+
+There are no secrets in the compose file, but you may wish to use .env file environment variables for hostnames if you have an ongoing need for this.
+
+a) If you are building on an unusual platform such as ARM64, be sure to add the platform tag to your yml
+under container_name, for example:
+```
+    container_name: quiz-app-backend
+    platform: linux/arm64
+    ...
+```
+You will need to use the correct platform for both the frontend container and the backend container e.g.:
+```
+    container_name: interview-quiz-app
+    platform: linux/arm64
+```
+
+b) If you are running on localhost, remove or change the sample frontend and backend URLs in all files.
+For example, assuming you are using port 3010 for your backend, change references to `https://yourbackend.domain.tld` to `http://localhost:3010` as below:
+
+CHANGE FROM <==
+```
+VITE_API_BASE_URL=https://yourbackend.domain.tld/api
+```
+CHANGE TO ==>:
+```
+VITE_API_BASE_URL=https://localhost:3010/api
+```
+
+Also change `https://yourfrontend.domain.tld/api` to  ```http://localhost:8080``` or the value that
+you have otherwise configured, such as ```http://localhost:5173```.
 
 1. **Build and start both services:**
 ```bash
 docker-compose up --build
 ```
 
-2. **The app will be available at:**
+2. **Unless you have overridden the configured URLs, The app will be available at:**
    - Frontend: `http://localhost:8080`
    - Backend API: `http://localhost:3010`
+
 
 3. **To run in detached mode (background):**
 ```bash
@@ -84,24 +119,32 @@ docker-compose logs --tail=100
 The backend service accepts the following environment variables (set in `docker-compose.yml`):
 
 - `PORT` - Server port (default: 3010)
-- `CORS_ORIGINS` - Comma-separated list of allowed CORS origins
-- `DB_PATH` - Path to SQLite database file (default: `/app/data/quizdb.sqlite`)
-- `QUIZ_DB_PATH` - IDIOT-BOT Path to SQLite database file (default: `/app/data/quizdb.sqlite`)
-- `RESULTS_DB_PATH` - `/app/data/quiz_results.sqlite`
+- `CORS_ORIGINS` - Comma-separated list of allowed CORS origins - critical for https services
 
-- `QUIZ_REPO_TARBALL` - `/app/vendor/quizzes.tar.gz`
+- `ENV_PATH_TYPE` - `absolute` for docker pathspecs (`/app` root), or `relative` for machine installs to path of your choice -- this variable indicates if Environment Variable pathspecs are relative or absolute
+- `DB_PATH` - Path to SQLite database file (default: `/app/data/quizdb.sqlite`)
+- `QUIZ_DB_PATH` - Path to quiz database file (default: `/app/data/quizdb.sqlite`)
+- `RESULTS_DB_PATH` - `/app/data/quiz_results.sqlite` - Path to quiz results temp data
+- `QUIZ_REPO_TARBALL` - `/app/vendor/quizzes.tar.gz` - github tarball used to import quizzes
 - `QUIZ_REPO_ROOT` - Path to quiz content repository (default: `/app/vendor/quizzes`)
 - `NODE_ENV` - Node environment (production/development)
+- `VITE_API_BASE_URL` - Backend URL for api calls (make sure to suffix with `/api`)
 
 ### Frontend Environment Variables
 
-The frontend is built with the API URL embedded at build time. To change it, rebuild with:
+The frontend is built with the API URL embedded at build time:`VITE_API_BASE_URL`.  
+
+**This environment variable is CRITICAL**.
+
+To change it, edit the `docker-compose.yml` file, rebuild with:
 
 ```bash
 docker-compose build --build-arg VITE_API_BASE_URL=http://your-api-url/api frontend
 ```
 
 ## Publishing to Docker Hub
+
+**NOTE:** _You can skip this section if you just want to run the app, not publish your own docker image to docker hub._
 
 ### Step 1: Login to Docker Hub
 
@@ -152,6 +195,7 @@ services:
       - QUIZ_DB_PATH=/app/data/quizdb.sqlite
       - RESULTS_DB_PATH=/app/data/quiz_results.sqlite
       - QUIZ_REPO_TARBALL=/app/vendor/quiz.tar
+      ...et cetera
     volumes:
       - backend-data:/app/data
       - ./backend/vendor:/app/vendor:ro
@@ -199,6 +243,13 @@ Note: If running frontend separately, ensure the backend is accessible at the UR
 
 ## Troubleshooting
 
+Once your containers are up, you should check each of 3 quiz types, to ensure your can 'see' the quiz data coming from the backend.  
+If quizzes fail to load,  check the browser console.  It is most likely due to a configuration issue preventing backend
+API calls from succeeding. (See "App can't connect to backend API" below)
+
+Only localhost-ed instances are allowed to use Administration functions to reload data.  So possibly reload if you are
+running from localhost and quiz data is missing or unavailable.  Be sure to check the troubleshooting tips below.
+
 ### Container won't start
 - Check if ports are already in use: `lsof -i :8080` or `lsof -i :3010`
 - Check container logs: `docker-compose logs [service-name]`
@@ -213,6 +264,12 @@ Note: If running frontend separately, ensure the backend is accessible at the UR
 - Check backend logs: `docker-compose logs backend`
 - Verify backend health: `curl http://localhost:3010/health`
 - Ensure CORS_ORIGINS includes the frontend URL
+
+Once your containers are up, you should check each of 3 quiz types, to ensure your can 'see' the quiz data from the backend.  
+If quizzes fail to load,  check the browser console.  It is most likely due to a configuration issue preventing backend
+API calls from succeeding.
+
+
 
 ### Database issues
 - Database is stored in a Docker volume (`backend-data`)
@@ -262,3 +319,61 @@ Both services are on the same Docker network (`quiz-app-network`), allowing them
 - Both services restart automatically unless stopped
 - Health checks ensure services are ready before dependencies start
 - Logs from both services are combined when using `docker-compose logs`
+
+
+## Apache2 Reverse Forwarding
+If you choose to reverse-forward your services, you will need the usual hosting credentials (registered domain, public IP, and domain certificates for both frontend and backend services.
+
+### Sample Apache Vhost Conf
+
+**NOTE:**  You need to enable apache2 `header` and `rewrite` modules to use the sample config.
+
+```
+# stray http requests
+<VirtualHost *:80>
+    ServerName yourfrontend.domain.tld
+    # http to https
+    Redirect permanent / https://yourfrontend.domain.tld
+</VirtualHost>
+# frontend
+<VirtualHost *:443>
+    ServerName yourfrontend.domain.tld
+
+    ### following three lines are for CORS support - CORS_ORIGINS is for backend only
+    Header add Access-Control-Allow-Origin "https://yourbackend.domain.tld"
+    Header add Access-Control-Allow-Headers "origin, x-requested-with, content-type"
+    Header add Access-Control-Allow-Methods "PUT, GET, POST, DELETE, OPTIONS"
+
+    SSLEngine on
+    SSLCertificateFile      /etc/letsencrypt/live/yourfrontend.domain.tld/fullchain.pem
+    SSLCertificateKeyFile   /etc/letsencrypt/live/yourfrontend.domain.tld/privkey.pem
+
+    ProxyPreserveHost On
+    ProxyRequests Off
+    # Proxy to docker app nginx port
+    ProxyPass /        http://127.0.0.1:8080/
+    ProxyPassReverse / http://127.0.0.1:8080/
+
+</VirtualHost>
+# backend
+<VirtualHost *:443>
+    ServerName yourbackend.domain.tld
+    ###
+    ### The header lines are for CORS support - you need header mod enabled
+    ### Be sure to use the docker-compose CORS_ORIGINS variable to establish 
+    ### CORS-allowed hosts (such as frontend service!)
+    ###
+    Header add Access-Control-Allow-Headers "origin, x-requested-with, content-type"
+    Header add Access-Control-Allow-Methods "PUT, GET, POST, DELETE, OPTIONS"
+
+    SSLEngine on
+    SSLCertificateFile      /etc/letsencrypt/live/yourbackend.domain.tld/fullchain.pem
+    SSLCertificateKeyFile   /etc/letsencrypt/live/yourbackend.domain.tld/privkey.pem
+
+    ProxyPreserveHost On
+    ProxyRequests Off       
+    # Proxy API to docker backend app
+    ProxyPass /        http://127.0.0.1:3010/
+    ProxyPassReverse / http://127.0.0.1:3010/
+</VirtualHost>
+```

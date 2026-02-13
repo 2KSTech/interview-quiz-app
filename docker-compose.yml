@@ -2,17 +2,18 @@ version: '3.8'
 
 services:
   backend:
+    image: YOUR_DOCKERHUB_USERNAME/quiz-app-backend:latest
+    container_name: quiz-app-backend
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: quiz-app-backend
     ports:
-      - 127.0.0.1:3010:3010
+      - 3010:3010
     restart: unless-stopped
     environment:
       - NODE_ENV=production
       - PORT=3010
-      - CORS_ORIGINS=http://localhost:8080,http://localhost:5173,https://quiz.workinpilot.fun
+      - CORS_ORIGINS=http://localhost:8080,https://yourbackend.domain.tld,https://yourfrontend.domain.tld
       - ENV_PATH_TYPE=absolute
       - QUIZ_APP_FRONTEND_PARENT_ROOT=/app
       - QUIZ_APP_BACKEND_PARENT_ROOT=/app
@@ -21,6 +22,7 @@ services:
       - RESULTS_DB_PATH=/app/data/quiz_results.sqlite
       - QUIZ_REPO_TARBALL=/app/vendor/quizzes.tar.gz
       - QUIZ_REPO_ROOT=/app/vendor/quizzes
+      - VITE_API_BASE_URL=https://yourbackend.domain.tld/api
     volumes:
       - backend-data:/app/data
     healthcheck:
@@ -33,17 +35,19 @@ services:
       - quiz-app-network
 
   frontend:
+    image: YOUR_DOCKERHUB_USERNAME/quiz-app-frontend:latest
+    container_name: interview-quiz-app
     build:
       context: .
       dockerfile: Dockerfile
       args:
-        - VITE_API_BASE_URL=http://localhost:3010/api
-    container_name: interview-quiz-app
+        - VITE_API_BASE_URL=https://yourbackend.domain.tld/api
     ports:
-      - 127.0.0.1:7860:8080
+      - 8080:8080
     restart: unless-stopped
     environment:
       - NODE_ENV=production
+      - VITE_API_BASE_URL=https://yourbackend.domain.tld/api
     depends_on:
       backend:
         condition: service_healthy
@@ -62,4 +66,5 @@ volumes:
 networks:
   quiz-app-network:
     driver: bridge
+
 
