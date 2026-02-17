@@ -8,6 +8,18 @@ The application stack is comprised of two services:
 - **Backend**: Node.js/Express API server running on port 3010 (internal)
 - **Frontend**: React/Vite SPA served by nginx on port 8080
 
+```
+interview-quiz-app/
+├── frontend/
+│   ├── Dockerfile
+│   └── (frontend source code)
+├── backend/
+│   ├── Dockerfile
+│   └── (backend source code)
+├── docker-compose.yml
+└─DOCKER.md
+```
+
 Both services are orchestrated via `docker-compose.yml` and can be run together or separately.
   
 ## Prerequisites

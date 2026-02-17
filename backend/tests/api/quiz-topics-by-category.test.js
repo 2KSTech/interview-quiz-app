@@ -1,3 +1,6 @@
+// require('dotenv').config(); 
+// Load environment variables from env.template
+require('dotenv').config({ path: 'env.template' });
 const request = require('supertest');
 const express = require('express');
 const quizApiRoutes = require('../../routes/quiz-api');
